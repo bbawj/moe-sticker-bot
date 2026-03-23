@@ -11,7 +11,6 @@ RUN apt-get update && \
         libarchive-dev \
         libarchive-tools \
         ffmpeg \
-        bsdtar \
         python3 \
         python3-pip \
         gcc && \
