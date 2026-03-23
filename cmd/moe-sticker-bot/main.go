@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"os"
+	"strconv"
 	"strings"
 
 	log "github.com/sirupsen/logrus"
@@ -44,7 +45,10 @@ func parseCmdLine() core.ConfigTemplate {
 
 	conf := core.ConfigTemplate{}
 
-	conf.BotToken = *botToken
+	conf.BotToken = os.Getenv("BOT_TOKEN")
+	if conf.BotToken == "" {
+		conf.BotToken = *botToken
+	}
 	if conf.BotToken == "" {
 		log.Error("Please set --bot_token")
 		log.Error("Use --help to see options.")
@@ -52,6 +56,16 @@ func parseCmdLine() core.ConfigTemplate {
 	}
 	if !strings.Contains(conf.BotToken, ":") {
 		log.Fatal("Bad bot token!")
+	}
+	if raw := os.Getenv("ALLOWED_IDS"); raw != "" {
+		for _, s := range strings.Split(raw, ",") {
+			s = strings.TrimSpace(s)
+			id, err := strconv.ParseInt(s, 10, 64)
+			if err != nil {
+				log.Fatalf("Bad ID in ALLOWED_IDS: %q", s)
+			}
+			conf.AllowedIDs = append(conf.AllowedIDs, id)
+		}
 	}
 
 	conf.DbAddr = *dbAddr

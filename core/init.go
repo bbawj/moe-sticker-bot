@@ -32,6 +32,21 @@ func Init(conf ConfigTemplate) {
 
 	// complies to telebot v3.1
 	b.Use(Recover())
+	b.Use(func(next tele.HandlerFunc) tele.HandlerFunc {
+		return func(c tele.Context) error {
+			if len(msbconf.AllowedIDs) == 0 {
+				return next(c)
+			}
+			senderID := c.Sender().ID
+			for _, id := range msbconf.AllowedIDs {
+				if id == senderID {
+					return next(c)
+				}
+			}
+			log.Debugf("Rejected sender %d", senderID)
+			return c.Send("Unauthorized.")
+		}
+	})
 
 	b.Handle("/quit", cmdQuit)
 	b.Handle("/cancel", cmdQuit)

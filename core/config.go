@@ -15,6 +15,7 @@ type ConfigTemplate struct {
 	DbAddr              string
 	DbUser              string
 	DbPass              string
+	AllowedIDs          []int64
 	// BotApiAddr       string
 	// BotApiDir        string
 	// WebhookPublicAddr string
