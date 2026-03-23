@@ -9,6 +9,9 @@ RUN apt-get update && \
         curl \
         gifsicle \
         libarchive-dev \
+        libarchive-tools \
+        ffmpeg
+        bsdtar \
         python3 \
         python3-pip \
         gcc && \
@@ -23,11 +26,6 @@ FROM golang:bookworm AS builder
 
 WORKDIR /src
 COPY . .
-
-# Download static ffmpeg
-RUN apt-get update && apt-get install -y --no-install-recommends curl xz-utils && \
-    curl -JOL "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-gpl.tar.xz" && \
-    tar -xf ffmpeg-master-latest-linux64-gpl.tar.xz
 
 # Build Go binary
 RUN go build -o moe-sticker-bot cmd/moe-sticker-bot/main.go
