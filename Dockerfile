@@ -33,7 +33,6 @@ RUN go build -o moe-sticker-bot cmd/moe-sticker-bot/main.go
 # Stage 3: final image
 FROM base
 
-COPY --from=builder /src/ffmpeg-master-latest-linux64-gpl/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /src/moe-sticker-bot /moe-sticker-bot
 COPY tools/msb_kakao_decrypt.py /usr/local/bin/msb_kakao_decrypt.py
 COPY tools/msb_emoji.py         /usr/local/bin/msb_emoji.py
