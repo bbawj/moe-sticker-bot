@@ -10,7 +10,7 @@ RUN apt-get update && \
         gifsicle \
         libarchive-dev \
         libarchive-tools \
-        ffmpeg
+        ffmpeg \
         bsdtar \
         python3 \
         python3-pip \
